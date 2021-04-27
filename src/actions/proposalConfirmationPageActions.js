@@ -7,24 +7,43 @@ export const updateProposal = (bookingId, history, type) => async dispatch => {
     //start process
     dispatch({ type: 'START_CANCEL_PROPOSAL_PROCESS' });
 
-    let formValues;
+    const token = localStorage.getItem('token');
+
+    const accountType = localStorage.getItem('accountType');
+
+    let url;
 
     if (type === 'cancel') {
-      formValues = { active: false };
+      if (accountType === 'user') {
+        url = `https://foodapp2021.herokuapp.com/api/v1/bookings/user-cancel/${bookingId}`;
+      }
     }
 
     if (type === 'confirm') {
-      formValues = { confirmed: true };
+      url = `https://foodapp2021.herokuapp.com/api/v1/bookings/chef-approve/${bookingId}`;
     }
 
     if (type === 'complete') {
-      formValues = { completed: true };
+      url = `https://foodapp2021.herokuapp.com/api/v1/bookings/user-completed/${bookingId}`;
     }
 
-    //update data at api
-    await axios.patch(
-      `http://localhost:7000/api/v1/bookings/${bookingId}`,
-      formValues
+    if (type === 'reject') {
+      url = `https://foodapp2021.herokuapp.com/api/v1/bookings/chef-reject/${bookingId}`;
+    }
+
+    if (type === 'make payment') {
+      url = `https://foodapp2021.herokuapp.com/api/v1/bookings/user-paid/${bookingId}`;
+    }
+
+    // update data at api
+    await axios.put(
+      url,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
     );
 
     //notify user of successful update
@@ -44,8 +63,6 @@ export const updateProposal = (bookingId, history, type) => async dispatch => {
     //stop process
     dispatch({ type: 'STOP_CANCEL_PROPOSAL_PROCESS' });
   } catch (err) {
-    console.log(err);
-
     //stop process
     dispatch({ type: 'STOP_CANCEL_PROPOSAL_PROCESS' });
 

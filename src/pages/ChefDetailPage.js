@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import Calendar from 'react-calendar';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import {
@@ -37,6 +36,12 @@ const ChefDetailPage = props => {
       dispatch({ type: 'SET_ACCOUNT_TYPE', payload: accountType });
     }
 
+    const token = localStorage.getItem('token');
+
+    if (token) {
+      dispatch({ type: 'SIGNED_IN' });
+    }
+
     dispatch(fetchChefData(id, history));
   }, []);
 
@@ -65,8 +70,8 @@ const ChefDetailPage = props => {
     //display the reviews and button
     return (
       <>
-        {chefDetailPage.reviews.map(review => (
-          <li className={classes.reviewItem} key={review._id}>
+        {chefDetailPage.reviews.map((review, index) => (
+          <li className={classes.reviewItem} key={index}>
             <ReviewItem review={review} />
           </li>
         ))}
@@ -114,10 +119,10 @@ const ChefDetailPage = props => {
       <div className={classes.contentContainer}>
         <img
           src={chefDetailPage.chef.profileImage}
-          alt={chefDetailPage.chef.username}
+          alt={chefDetailPage.chef.name}
           className={classes.chefImage}
         />
-        <h2 className={classes.name}>{chefDetailPage.chef.username}</h2>
+        <h2 className={classes.name}>{chefDetailPage.chef.name}</h2>
 
         <ul className={classes.categoriesList}>
           {chefDetailPage.chef.categories?.map((category, index) => {
@@ -167,21 +172,38 @@ const ChefDetailPage = props => {
           ''
         )}
 
-        <div className={classes.calendarContainer}>
-          <h3 className={classes.calendarHeading}>Calendar</h3>
-          <Calendar tileClassName={setActiveTileClass} />
-        </div>
-
         <div className={classes.proposalContainer}>
           <p className={classes.proposalHeading}>
             Make sure to send a proposal three days before.
           </p>
 
-          {ui.accountType === 'chef' ? (
-            <OrangeBtn path={`/proposals`} text="Go to my proposal requests" />
-          ) : (
-            <OrangeBtn path={`/chefs/${id}/proposal`} text="Send proposal" />
-          )}
+          <ul className={classes.btnList}>
+            {ui.accountType === 'chef' ? (
+              <li className={classes.btnItem}>
+                <OrangeBtn
+                  path={`/proposals`}
+                  text="Go to my proposal requests"
+                />
+              </li>
+            ) : (
+              <li className={classes.btnItem}>
+                <OrangeBtn
+                  path={ui.isSignedIn ? `/chefs/${id}/proposal` : `/signup`}
+                  text="Send proposal"
+                />
+              </li>
+            )}
+            {ui.accountType === 'user' && ui.isSignedIn ? (
+              <li className={classes.btnItem}>
+                <OrangeBtn
+                  path={`/chats/${chefDetailPage.chef.email}`}
+                  text="Chat with chef"
+                />
+              </li>
+            ) : (
+              ''
+            )}
+          </ul>
         </div>
       </div>
     </PageContainer>

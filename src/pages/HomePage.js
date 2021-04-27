@@ -51,7 +51,7 @@ const HomePage = () => {
           <h1 className={classes.heading}>
             Let the professionals do the work for you
           </h1>
-          <OrangeBtn path="/learnmore" text="Learn More" />
+          <OrangeBtn path="/aboutus" text="Learn More" />
         </div>
       </section>
 

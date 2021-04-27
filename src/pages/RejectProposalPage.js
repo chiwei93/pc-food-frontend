@@ -7,7 +7,7 @@ import SubmitBtn from '../components/SubmitBtn';
 import classes from './ConfirmProposalPage.module.css';
 import logo from '../images/confirm.png';
 
-const ConfirmProposalPage = props => {
+const RejectProposalPage = props => {
   const { proposalId } = props.match.params;
 
   const dispatch = useDispatch();
@@ -18,22 +18,22 @@ const ConfirmProposalPage = props => {
 
   //handle btn click
   const onBtnClick = () => {
-    dispatch(updateProposal(proposalId, history, 'confirm'));
+    dispatch(updateProposal(proposalId, history, 'reject'));
   };
 
   return (
     <PageContainer>
       <div className={classes.header}>
         <img src={logo} alt="logo" className={classes.logo} />
-        <h2 className={classes.heading}>Confirmation</h2>
+        <h2 className={classes.heading}>Rejection</h2>
       </div>
       <p className={classes.message}>
-        Press the button below to confirm this proposal request
+        Are you sure you want to reject this proposal?
       </p>
 
       <div className={classes.btnContainer}>
         <SubmitBtn
-          text={proposalLoading ? 'In Progress...' : 'Confirm Proposal'}
+          text={proposalLoading ? 'In Progress...' : 'Reject Proposal'}
           onClick={onBtnClick}
         />
       </div>
@@ -41,4 +41,4 @@ const ConfirmProposalPage = props => {
   );
 };
 
-export default ConfirmProposalPage;
+export default RejectProposalPage;

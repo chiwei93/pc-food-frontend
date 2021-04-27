@@ -14,7 +14,7 @@ const SelectBtn = ({ menus, onChange }) => {
     >
       {menus.map((data, index) => (
         <option value={index} key={index}>
-          {data.category}
+          {data.food_category}
         </option>
       ))}
     </select>

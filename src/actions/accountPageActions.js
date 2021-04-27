@@ -48,13 +48,11 @@ export const fetchUserData = history => async dispatch => {
     //stop page loading
     dispatch({ type: 'STOP_PAGE_LOADING' });
   } catch (err) {
-    console.log(err);
-
     //stop page loading
     dispatch({ type: 'STOP_PAGE_LOADING' });
 
     //navigate the user to the error page
-    // history.push('/error');
+    history.push('/error');
   }
 };
 
@@ -76,17 +74,13 @@ export const updateAccountInfo = (
       url = 'https://foodapp2021.herokuapp.com/api/v1/users/update';
     }
 
-    console.log(formValues);
-
     const form = { username: formValues.name, email: formValues.email };
 
-    const res = await axios.put(url, form, {
+    await axios.put(url, form, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
-
-    console.log(res.data);
 
     //notify the user that the details have been updated
     toast.success('Account Details updated successfully', {
@@ -101,8 +95,6 @@ export const updateAccountInfo = (
 
     dispatch({ type: 'STOP_ACCOUNT_PAGE_UPDATE' });
   } catch (err) {
-    console.log(err);
-
     //stop page loading
     dispatch({ type: 'STOP_ACCOUNT_PAGE_UPDATE' });
 

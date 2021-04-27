@@ -57,9 +57,10 @@ const ReviewFormPage = props => {
     const formValues = {};
 
     formValues.rating = reviewForm.rating;
-    formValues.review = reviewForm.review;
+    formValues.comment = reviewForm.review;
+    formValues.chef = chefId;
 
-    dispatch(postReview(chefId, formValues, history));
+    dispatch(postReview(formValues, history));
   };
 
   //show loader when the page is loading
@@ -72,10 +73,10 @@ const ReviewFormPage = props => {
       <div className={classes.header}>
         <img
           src={reviewForm.chef.profileImage}
-          alt="chef"
+          alt={reviewForm.chef.name}
           className={classes.chefImage}
         />
-        <p className={classes.name}>{reviewForm.chef.username}</p>
+        <p className={classes.name}>{reviewForm.chef.name}</p>
       </div>
 
       <div>

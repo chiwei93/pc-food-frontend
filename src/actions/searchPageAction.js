@@ -9,6 +9,8 @@ export const onSearchPageInputChange = term => {
 //fetch chefs data
 export const fetchSearchData = term => async dispatch => {
   try {
+    dispatch({ type: 'SET_SEARCH_PAGE_CHEF_CARDS', payload: [] });
+
     //start loading
     dispatch({ type: 'START_SEARCH_PAGE_CARD_LOADING' });
 
@@ -58,10 +60,8 @@ export const fetchSearchData = term => async dispatch => {
     dispatch({ type: 'SET_SEARCH_PAGE_CHEF_CARDS', payload: chefs });
 
     //stop loading
-    dispatch({ type: 'STOP_SEARCH_PAGE_CARD_LOADING' });
+    setTimeout(() => dispatch({ type: 'STOP_SEARCH_PAGE_CARD_LOADING' }), 300);
   } catch (err) {
-    console.log(err);
-
     //stop loading
     dispatch({ type: 'STOP_SEARCH_PAGE_CARD_LOADING' });
 

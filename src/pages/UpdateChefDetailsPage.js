@@ -32,7 +32,7 @@ const UpdateChefDetailsPage = props => {
   //handle form submit
   const onUpdateFormSubmit = formValues => {
     dispatch(
-      updateMenu(formValues, props.updateChefDetailsPage.activeMenu._id)
+      updateMenu(formValues, props.updateChefDetailsPage.activeMenu.menu_id)
     );
   };
 
@@ -52,16 +52,22 @@ const UpdateChefDetailsPage = props => {
 
       <ul className={classes.imagesList}>
         {props.updateChefDetailsPage.activeMenu.images?.map(image => (
-          <li className={classes.imageItem} key={image._id}>
+          <li className={classes.imageItem} key={image.menu_images_id}>
             <img
-              src={image.imagePath}
-              alt={image._id}
+              src={image.image_path}
+              alt={image._menu_images_id}
               className={classes.image}
             />
             <div className={classes.uploadBtnContainer}>
               <UploadBtn
-                path={`/upload/${image._id}`}
-                onClick={() => dispatch(onUploadBtnClick('menuImages'))}
+                path={`/upload/${image.menu_images_id}`}
+                onClick={() => {
+                  dispatch(onUploadBtnClick('menuImages'));
+                  dispatch({
+                    type: 'SET_MODAL_IMAGE_TYPE',
+                    payload: 'menu_image',
+                  });
+                }}
               />
             </div>
           </li>
@@ -83,7 +89,7 @@ const UpdateChefDetailsPage = props => {
 
           <li className={classes.menuCategoryItem}>
             <Field
-              name="appetizer"
+              name="appetiser"
               component={UpdateTextInput}
               label="appetizer"
               inputType="text"
@@ -144,7 +150,7 @@ const form = reduxForm({ form: 'updateMenuForm', enableReinitialize: true })(
 const mapStateToProps = state => {
   return {
     initialValues: {
-      appetizer: state.updateChefDetailsPage.activeMenu.appetizer,
+      appetiser: state.updateChefDetailsPage.activeMenu.appetiser,
       starter: state.updateChefDetailsPage.activeMenu.starter,
       main: state.updateChefDetailsPage.activeMenu.main,
       dessert: state.updateChefDetailsPage.activeMenu.dessert,

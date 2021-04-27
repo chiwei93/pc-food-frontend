@@ -9,19 +9,16 @@ export const fetchCategories = (chefId, history) => async dispatch => {
 
     //fetch data
     const response = await axios.get(
-      `http://localhost:7000/api/v1/categories/${chefId}`
+      `https://foodapp2021.herokuapp.com/api/v1/food_categories/${chefId}`
     );
 
-    const categoriesData = response.data.categories;
-    const categories = categoriesData.map(data => data.category);
+    const categories = response.data.food_category;
 
     dispatch({ type: 'SET_PROPOSAL_FORM_CATEGORIES', payload: categories });
 
     //stop page loading
     dispatch({ type: 'STOP_PAGE_LOADING' });
   } catch (err) {
-    console.log(err);
-
     //stop page loading
     dispatch({ type: 'STOP_PAGE_LOADING' });
 
@@ -39,9 +36,19 @@ export const makeProposal = (formValues, chefId, history) => async dispatch => {
     //get token
     const token = localStorage.getItem('token');
 
+    const form = { ...formValues };
+
+    form.chef = chefId;
+
+    if (formValues.diet_restrictions === 'true') {
+      form.diet_restrictions = true;
+    } else {
+      form.diet_restrictions = false;
+    }
+
     const response = await axios.post(
-      `http://localhost:7000/api/v1/bookings/chefs/${chefId}`,
-      formValues,
+      `https://foodapp2021.herokuapp.com/api/v1/bookings/new`,
+      form,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -53,10 +60,8 @@ export const makeProposal = (formValues, chefId, history) => async dispatch => {
     dispatch({ type: 'STOP_PROPOSAL_FORM_BOOKING' });
 
     //navigate the user to the confirmation page
-    history.push(`/proposals/${response.data.booking._id}`);
+    history.push(`/proposals/${response.data.booking_id}`);
   } catch (err) {
-    console.log(err);
-
     //stop booking
     dispatch({ type: 'STOP_PROPOSAL_FORM_BOOKING' });
 

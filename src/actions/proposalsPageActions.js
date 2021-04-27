@@ -21,9 +21,9 @@ export const fetchProposals = (
     let url;
 
     if (accountType === 'chef') {
-      url = `http://localhost:7000/api/v1/bookings/chefs/all`;
+      url = `https://foodapp2021.herokuapp.com/api/v1/bookings/chef`;
     } else {
-      url = `http://localhost:7000/api/v1/bookings/users/all`;
+      url = `https://foodapp2021.herokuapp.com/api/v1/bookings/user`;
     }
 
     const response = await axios.get(url, {
@@ -32,7 +32,7 @@ export const fetchProposals = (
       },
     });
 
-    const { bookings } = response.data;
+    const bookings = response.data.results;
 
     let bookingsDisplayed;
 
@@ -52,23 +52,29 @@ export const fetchProposals = (
     //show user when chef account and chef when user account
     if (accountType === 'chef') {
       promises = bookingsDisplayed.map(booking =>
-        axios.get(`http://localhost:7000/api/v1/users/${booking.user}`)
+        axios.get(
+          `https://foodapp2021.herokuapp.com/api/v1/users/${booking.user}`
+        )
       );
     } else {
       promises = bookingsDisplayed.map(booking =>
-        axios.get(`http://localhost:7000/api/v1/chefs/${booking.chef}`)
+        axios.get(
+          `https://foodapp2021.herokuapp.com/api/v1/chefs/${booking.chef}`
+        )
       );
     }
 
     const promiseRes = await Promise.all(promises);
 
     const datas = promiseRes.map(res => {
-      return res.data.chef || res.data.user;
+      return res.data.chef_profile || res.data;
     });
 
     bookingsDisplayed.forEach((booking, index) => {
       booking.account = datas[index];
     });
+
+    console.log(bookingsDisplayed);
 
     dispatch({
       type: 'SET_PROPOSALS_PAGE_PROPOSALS',
@@ -78,8 +84,6 @@ export const fetchProposals = (
     //stop loading
     dispatch({ type: 'STOP_PROPOSALS_PAGE_ITEMS_LOADING' });
   } catch (err) {
-    console.log(err);
-
     //stop loading
     dispatch({ type: 'STOP_PROPOSALS_PAGE_ITEMS_LOADING' });
 

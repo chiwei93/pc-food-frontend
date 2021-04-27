@@ -30,11 +30,16 @@ export const postCategoriesData = (
       }
     });
 
-    //create the categories
+    const token = localStorage.getItem('token');
+
+    // create the categories
     const promises = categories.map(category =>
-      axios.post(`http://localhost:7000/api/v1/categories/${chefId}`, {
-        category,
-      })
+      axios.post(
+        `https://foodapp2021.herokuapp.com/api/v1/food_categories/new/${chefId}`,
+        {
+          category,
+        }
+      )
     );
 
     await Promise.all(promises);
@@ -42,29 +47,25 @@ export const postCategoriesData = (
     //create the menus
     const menuObj = {
       description: '',
-      appetizer: 'dish',
+      appetiser: 'dish',
       starter: 'dish',
       main: 'dish',
       dessert: 'dish',
     };
 
-    //get token from local storage
-    const token = localStorage.getItem('token');
-
     const menuObjects = categories.map(category => {
       const obj = { ...menuObj };
 
-      obj.category = category;
+      obj.food_category = category;
 
       return obj;
     });
 
     const menuPromises = menuObjects.map(el =>
-      axios.post(`http://localhost:7000/api/v1/menus`, el, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
+      axios.post(
+        `https://foodapp2021.herokuapp.com/api/v1/menus/${chefId}/new`,
+        el
+      )
     );
 
     const responses = await Promise.all(menuPromises);
@@ -76,11 +77,18 @@ export const postCategoriesData = (
       const promiseArr = [];
 
       for (let i = 0; i < 3; i++) {
-        const promise = axios.post(`http://localhost:7000/api/v1/menuImages`, {
-          menu: menu._id,
-          imagePath:
-            'https://pc-food-bucket.s3.ap-southeast-1.amazonaws.com/1619164360855',
-        });
+        const promise = axios.post(
+          `https://foodapp2021.herokuapp.com/api/v1/menu_images/new/${menu.menu_id}`,
+          {
+            image_path:
+              'https://pc-food-bucket.s3.ap-southeast-1.amazonaws.com/1619164360855',
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
         promiseArr.push(promise);
       }
@@ -88,18 +96,16 @@ export const postCategoriesData = (
       return await Promise.all(promiseArr);
     });
 
-    //navigate them to the update page
+    // //navigate them to the update page
     history.push(`/chefs/update/${chefId}`);
 
     //stop loading
     dispatch({ type: 'STOP_PAGE_LOADING' });
   } catch (err) {
-    console.log(err);
-
     //stop loading
     dispatch({ type: 'STOP_PAGE_LOADING' });
 
-    //navigate user to error page
-    history.push('/user');
+    // //navigate user to error page
+    history.push('/error');
   }
 };

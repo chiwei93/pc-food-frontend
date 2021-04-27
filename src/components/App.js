@@ -21,11 +21,16 @@ import CancelProposalPage from '../pages/CancelProposalPage';
 import ConfirmProposalPage from '../pages/ConfirmProposalPage';
 import ReviewFormPage from '../pages/ReviewFormPage';
 import CompleteProposalPage from '../pages/CompleteProposalPage';
+import RejectProposalPage from '../pages/RejectProposalPage';
+import PaymentProposalPage from '../pages/PaymentProposalPage';
 import ErrorPage from '../pages/ErrorPage';
 import Navbar from './Navbar';
 import Header from './Header';
 import SideBar from './SideBar';
 import UploadModal from './UploadModal';
+import AboutUsPage from '../pages/AboutUsPage';
+import SupportPage from '../pages/SupportPage';
+import FAQPage from '../pages/FAQPage';
 import classes from './App.module.css';
 import TestPage from '../pages/TestPage';
 
@@ -66,6 +71,14 @@ function App() {
             component={CompleteProposalPage}
           />
           <Route
+            path="/proposals/reject/:proposalId"
+            component={RejectProposalPage}
+          />
+          <Route
+            path="/proposals/payment/:proposalId"
+            component={PaymentProposalPage}
+          />
+          <Route
             path="/proposals/:proposalId"
             component={ProposalDetailsPage}
           />
@@ -77,6 +90,9 @@ function App() {
           <Route path="/categories" component={CategoriesPage} />
           <Route path="/upload/:id" component={UploadModal} />
           <Route path="/error" component={ErrorPage} />
+          <Route path="/aboutus" component={AboutUsPage} />
+          <Route path="/support" component={SupportPage} />
+          <Route path="/faq" component={FAQPage} />
           <Route path="/test" component={TestPage} />
         </Switch>
       </div>

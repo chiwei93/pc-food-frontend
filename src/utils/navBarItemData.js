@@ -9,8 +9,6 @@ import {
   FaRegCalendarCheck,
   FaRegEnvelopeOpen,
   FaRegCreditCard,
-  FaComments,
-  FaCookieBite,
 } from 'react-icons/fa';
 
 export const notSignedInItems = [
@@ -27,7 +25,6 @@ export const userSignedInItems = [
   { text: 'My Account', icon: <FaUserAlt />, path: '/me' },
   { text: 'Proposals', icon: <FaRegCalendarCheck />, path: '/proposals' },
   { text: 'Messages', icon: <FaRegEnvelopeOpen />, path: '/chats' },
-  // { text: 'Reviews', icon: <FaComments />, path: '/reviews' },
   { text: 'Orders History', icon: <FaRegCreditCard />, path: '/orders' },
   { text: 'Log Out', icon: <FaUtensils />, path: '/' },
 ];

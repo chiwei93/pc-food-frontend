@@ -125,6 +125,17 @@
   color: var(--color-white) !important;
 }
 
+.btnList {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btnItem:not(:last-child) {
+  margin-right: 1em;
+}
+
 @media only screen and (min-width: 800px) {
   .btnUpdate {
     font-size: 0.9rem;

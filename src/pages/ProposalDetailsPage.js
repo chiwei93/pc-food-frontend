@@ -51,7 +51,7 @@ const ProposalDetailsPage = props => {
         <li className={classes.detailItem}>
           <div className={classes.detailContainer}>
             <p className={classes.label}>Name of customer:</p>
-            <p className={classes.value}>{proposalDetailsPage.userName}</p>
+            <p className={classes.value}>{proposalDetailsPage.name}</p>
           </div>
         </li>
         <li className={classes.detailItem}>
@@ -69,37 +69,37 @@ const ProposalDetailsPage = props => {
         <li className={classes.detailItem}>
           <div className={classes.detailContainer}>
             <p className={classes.label}>Type of sevice:</p>
-            <p className={classes.value}>{proposalDetailsPage.serviceType}</p>
+            <p className={classes.value}>{proposalDetailsPage.service_type}</p>
           </div>
         </li>
         <li className={classes.detailItem}>
           <div className={classes.detailContainer}>
             <p className={classes.label}>No of people:</p>
-            <p className={classes.value}>{proposalDetailsPage.peopleNumber}</p>
+            <p className={classes.value}>{proposalDetailsPage.pax}</p>
           </div>
         </li>
         <li className={classes.detailItem}>
           <div className={classes.detailContainer}>
             <p className={classes.label}>Meal:</p>
-            <p className={classes.value}>{proposalDetailsPage.mealType}</p>
+            <p className={classes.value}>{proposalDetailsPage.meal_type}</p>
           </div>
         </li>
         <li className={classes.detailItem}>
           <div className={classes.detailContainer}>
             <p className={classes.label}>Menu:</p>
-            <p className={classes.value}>{proposalDetailsPage.menuType}</p>
+            <p className={classes.value}>{proposalDetailsPage.menu_type}</p>
           </div>
         </li>
         <li className={classes.detailItem}>
           <div className={classes.detailContainer}>
             <p className={classes.label}>Hob:</p>
-            <p className={classes.value}>{proposalDetailsPage.hobType}</p>
+            <p className={classes.value}>{proposalDetailsPage.hob_type}</p>
           </div>
         </li>
         <li className={classes.detailItem}>
           <div className={classes.detailContainer}>
             <p className={classes.label}>Quantity of hob:</p>
-            <p className={classes.value}>{proposalDetailsPage.hobNumber}</p>
+            <p className={classes.value}>{proposalDetailsPage.no_of_hob}</p>
           </div>
         </li>
         <li className={classes.detailItem}>
@@ -113,14 +113,14 @@ const ProposalDetailsPage = props => {
         <li className={classes.detailItem}>
           <div className={classes.detailContainer}>
             <p className={classes.label}>Price:</p>
-            <p className={classes.value}>{proposalDetailsPage.price}</p>
+            <p className={classes.value}>{`$${proposalDetailsPage.price}`}</p>
           </div>
         </li>
         <li className={classes.detailItem}>
           <div className={classes.detailContainer}>
             <p className={classes.label}>Diet restriction:</p>
             <p className={classes.value}>
-              {proposalDetailsPage.dietRestriction ? 'true' : 'false'}
+              {proposalDetailsPage.diet_restrictions ? 'true' : 'false'}
             </p>
           </div>
         </li>
@@ -133,17 +133,31 @@ const ProposalDetailsPage = props => {
       </ul>
 
       <ul className={classes.btnContainer}>
-        {proposalDetailsPage.completed ? (
-          ''
-        ) : (
+        {!proposalDetailsPage.completed && ui.accountType !== 'chef' ? (
           <li className={classes.btnItem}>
             <OrangeBtn
               text="Cancel proposal"
               path={`/proposals/cancel/${proposalId}`}
             />
           </li>
+        ) : (
+          ''
         )}
-        {ui.accountType === 'chef' && !proposalDetailsPage.confirmed ? (
+
+        {!proposalDetailsPage.completed && ui.accountType !== 'user' ? (
+          <li className={classes.btnItem}>
+            <OrangeBtn
+              text="Reject proposal"
+              path={`/proposals/reject/${proposalId}`}
+            />
+          </li>
+        ) : (
+          ''
+        )}
+
+        {ui.accountType === 'chef' &&
+        !proposalDetailsPage.confirmed &&
+        !proposalDetailsPage.completed ? (
           <li className={classes.btnItem}>
             <OrangeBtn
               text="Confirm proposal"
@@ -153,7 +167,23 @@ const ProposalDetailsPage = props => {
         ) : (
           ''
         )}
-        {proposalDetailsPage.confirmed && ui.accountType === 'user' ? (
+
+        {ui.accountType === 'user' &&
+        proposalDetailsPage.confirmed &&
+        !proposalDetailsPage.completed ? (
+          <li className={classes.btnItem}>
+            <OrangeBtn
+              text="Make Payment"
+              path={`/proposals/payment/${proposalId}`}
+            />
+          </li>
+        ) : (
+          ''
+        )}
+
+        {proposalDetailsPage.confirmed &&
+        ui.accountType === 'user' &&
+        !proposalDetailsPage.completed ? (
           <li className={classes.btnItem}>
             <OrangeBtn
               text="Proposal Completed"
@@ -163,6 +193,7 @@ const ProposalDetailsPage = props => {
         ) : (
           ''
         )}
+
         {proposalDetailsPage.completed && ui.accountType === 'user' ? (
           <li className={classes.btnItem}>
             <OrangeBtn

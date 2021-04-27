@@ -19,18 +19,20 @@ export const fetchChefData = (chefId, history) => async dispatch => {
 
     //fetch menus, categories and images
     const responses = await axios.get(
-      `http://localhost:7000/api/v1/menus/${chefId}`
+      `https://foodapp2021.herokuapp.com/api/v1/menus/chef/${chefId}`
     );
 
-    const { menus } = responses.data;
+    const menus = responses.data.results;
 
     const imagePromises = menus.map(menu =>
-      axios.get(`http://localhost:7000/api/v1/menuImages/menu/${menu._id}`)
+      axios.get(
+        `https://foodapp2021.herokuapp.com/api/v1/menu_images/${menu.menu_id}`
+      )
     );
 
     const imageResponses = await Promise.all(imagePromises);
 
-    const imageDatas = imageResponses.map(res => res.data.images);
+    const imageDatas = imageResponses.map(res => res.data);
 
     menus.forEach((menu, index) => {
       menu.images = imageDatas[index];
@@ -57,8 +59,8 @@ export const updateMenu = (formValues, menuId) => async dispatch => {
   try {
     dispatch({ type: 'START_UPDATING_CHEF_DETAILS_PAGE' });
 
-    await axios.patch(
-      `http://localhost:7000/api/v1/menus/update/${menuId}`,
+    await axios.put(
+      `https://foodapp2021.herokuapp.com/api/v1/menus/update/${menuId}`,
       formValues
     );
 
@@ -75,8 +77,6 @@ export const updateMenu = (formValues, menuId) => async dispatch => {
       progress: undefined,
     });
   } catch (err) {
-    console.log(err);
-
     //stop the updating process
     dispatch({ type: 'STOP_UPDATING_CHEF_DETAILS_PAGE' });
 

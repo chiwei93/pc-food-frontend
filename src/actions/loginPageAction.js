@@ -27,8 +27,6 @@ export const postLoginData = (
 
     const response = await axios.post(url, formValues);
 
-    console.log(response.data);
-
     //set the relevant info into local storage
     localStorage.setItem('token', response.data.auth_token);
     localStorage.setItem('accountType', accountType);
@@ -58,7 +56,6 @@ export const postLoginData = (
     //stop page loading
     dispatch({ type: 'STOP_PAGE_LOADING' });
   } catch (err) {
-    console.log(err);
     dispatch({ type: 'STOP_PAGE_LOADING' });
 
     //handle error using toast

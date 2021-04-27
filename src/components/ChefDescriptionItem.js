@@ -4,7 +4,7 @@ import classes from './ChefDescriptionItem.module.css';
 const ChefDescriptionItem = ({
   images,
   description,
-  appetizer,
+  appetiser,
   starter,
   main,
   dessert,
@@ -30,7 +30,7 @@ const ChefDescriptionItem = ({
           <ul className={classes.courseList}>
             <h4 className={classes.courseHeading}>Appetizer</h4>
             <li className={classes.courseItem}>
-              <p className={classes.foodName}>{appetizer}</p>
+              <p className={classes.foodName}>{appetiser}</p>
             </li>
           </ul>
         </li>

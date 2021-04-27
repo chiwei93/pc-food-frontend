@@ -96,7 +96,7 @@ const ProposalPage = props => {
               {proposalForm.categories.map((category, index) => (
                 <li className={classes.optionItem} key={index}>
                   <Field
-                    name="menuType"
+                    name="menu_type"
                     label={category}
                     component={RadioBtn}
                     props={{ value: category, id: `menu_${category}` }}
@@ -109,7 +109,7 @@ const ProposalPage = props => {
 
         <div className={classes.calendarContainer}>
           <h3 className={classes.calendarHeading}>Proposal Date</h3>
-          <Field name="proposalDate" component={renderCalendar} />
+          <Field name="proposed_date" component={renderCalendar} />
         </div>
 
         <div className={classes.textareaContainer}>

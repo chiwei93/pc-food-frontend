@@ -1,11 +1,11 @@
 import React from 'react';
 import PageContainer from '../containers/PageContainer';
-import classes from './TestPage.module.css';
+import classes from './DummyPage.module.css';
 
-const TestPage = () => {
+const DummyPage = ({ title }) => {
   return (
     <PageContainer>
-      <h2 className={classes.heading}>About Us</h2>
+      <h2 className={classes.heading}>{title}</h2>
 
       <ul className={classes.list}>
         <li className={classes.item}>
@@ -55,4 +55,4 @@ const TestPage = () => {
   );
 };
 
-export default TestPage;
+export default DummyPage;

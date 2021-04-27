@@ -8,25 +8,25 @@ export const fetchData = (bookingId, history) => async dispatch => {
 
     //fetch data
     const response = await axios.get(
-      `http://localhost:7000/api/v1/bookings/${bookingId}`
+      `https://foodapp2021.herokuapp.com/api/v1/bookings/${bookingId}`
     );
 
     const userResponse = await axios.get(
-      `http://localhost:7000/api/v1/users/${response.data.booking.user}`
+      `https://foodapp2021.herokuapp.com/api/v1/users/${response.data.user}`
     );
 
-    const { booking } = response.data;
-    const { user } = userResponse.data;
+    const booking = response.data;
+    const user = userResponse.data;
 
-    booking.userName = user.username;
+    booking.name = user.name;
     booking.email = user.email;
+    booking.phone = user.phone;
 
     dispatch({ type: 'SET_PROPOSAL_DETAILS_PAGE_PROPOSAL', payload: booking });
 
     //stop page loading
     dispatch({ type: 'STOP_PAGE_LOADING' });
   } catch (err) {
-    console.log(err);
     //stop page loading
     dispatch({ type: 'STOP_PAGE_LOADING' });
 

@@ -13,18 +13,17 @@ import {
 import socket from '../utils/socket';
 import ChatMessage from '../components/ChatMessage';
 import classes from './SingleChatPage.module.css';
-import chef1 from '../images/food1.jpg';
 
 const SingleChatPage = props => {
   const { receiverEmail } = props.match.params;
 
-  const currentUserEmail =
-    props.currentUserEmail || localStorage.getItem('email');
+  const currentUserEmail = localStorage.getItem('email');
 
   const messagesEndRef = useRef();
 
   useEffect(() => {
     props.fetchSingleChatData(currentUserEmail, receiverEmail);
+
     socket.on('receiveBroadcast', msg => props.insertMessage(msg));
   }, []);
 
@@ -55,7 +54,11 @@ const SingleChatPage = props => {
           </Link>
         </div>
         <div className={classes.imageContainer}>
-          <img src={chef1} alt="chef1" className={classes.receiverImage} />
+          <img
+            src="https://pc-food-bucket.s3.ap-southeast-1.amazonaws.com/1619099339372"
+            alt="chef1"
+            className={classes.receiverImage}
+          />
         </div>
         <div className={classes.receiverContainer}>
           <p className={classes.receiverName}>{props.receiverName}</p>
@@ -72,14 +75,14 @@ const SingleChatPage = props => {
 
       <div className={classes.form}>
         <div className={classes.imageUploadContainer}>
-          <input
+          {/* <input
             type="file"
             id="chatImageUpload"
             className={classes.imageInput}
           />
           <label htmlFor="chatImageUpload" className={classes.inputLabel}>
             <FaPlus className={classes.plusIcon} />
-          </label>
+          </label> */}
         </div>
         <div className={classes.textareaContainer}>
           {props.ui.isEmojiPickerOpen && (
@@ -124,7 +127,6 @@ const mapStateToProps = state => {
     messages: state.message.messages,
     message: state.message.message,
     receiverName: state.message.receiverName,
-    currentUserEmail: state.email.currentUserEmail,
   };
 };
 

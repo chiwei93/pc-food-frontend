@@ -19,16 +19,17 @@ export const fetchChefData = (chefId, history) => async dispatch => {
 
     //fetch data
     const response = await axios.get(
-      `http://localhost:7000/api/v1/chefs/${chefId}`
+      `https://foodapp2021.herokuapp.com/api/v1/chefs/${chefId}`
     );
 
-    dispatch({ type: 'SET_REVIEW_FORM_CHEF', payload: response.data.chef });
+    dispatch({
+      type: 'SET_REVIEW_FORM_CHEF',
+      payload: response.data.chef_profile,
+    });
 
     //stop loading
     dispatch({ type: 'STOP_PAGE_LOADING' });
   } catch (err) {
-    console.log(err);
-
     //stop loading
     dispatch({ type: 'STOP_PAGE_LOADING' });
 
@@ -38,7 +39,7 @@ export const fetchChefData = (chefId, history) => async dispatch => {
 };
 
 //post the review data to the api
-export const postReview = (chefId, formValues, history) => async dispatch => {
+export const postReview = (formValues, history) => async dispatch => {
   try {
     //start loading process
     dispatch({ type: 'START_REVIEW_FORM_LOADING' });
@@ -48,7 +49,7 @@ export const postReview = (chefId, formValues, history) => async dispatch => {
 
     //post data to api
     await axios.post(
-      `http://localhost:7000/api/v1/reviews/chef/${chefId}`,
+      `https://foodapp2021.herokuapp.com/api/v1/reviews/new`,
       formValues,
       {
         headers: {
@@ -78,8 +79,6 @@ export const postReview = (chefId, formValues, history) => async dispatch => {
     //navigate user to the proposals page
     history.push('/proposals');
   } catch (err) {
-    console.log(err);
-
     //stop loading process
     dispatch({ type: 'STOP_REVIEW_FORM_LOADING' });
 

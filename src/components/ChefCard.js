@@ -21,7 +21,7 @@ const ChefCard = ({
         <div className={classes.detailContainer}>
           <p className={classes.name}>{name}</p>
           <ul className={classes.categoriesList}>
-            {categories.map((el, index) => (
+            {categories?.map((el, index) => (
               <li className={classes.categoryItem} key={index}>
                 <p className={classes.category}>{el}</p>
               </li>

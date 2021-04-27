@@ -30,6 +30,12 @@ export const postSignUpData = (
     //sign up user
     const response = await axios.post(url, form);
 
+    //for chat
+    await axios.post(`https://pc-food-chat.herokuapp.com/api/v1/users`, {
+      name: response.data[0].user.username,
+      email: response.data[0].user.email,
+    });
+
     //save to localStorage
     localStorage.setItem('token', response.data[0].auth_token);
     localStorage.setItem('accountType', accountType);
@@ -48,13 +54,11 @@ export const postSignUpData = (
     //stop page loading
     dispatch({ type: 'STOP_PAGE_LOADING' });
   } catch (err) {
-    console.log(err);
-
     //stop page loading
     dispatch({ type: 'STOP_PAGE_LOADING' });
 
     //handle error using toast
-    toast.error('An error occurred while signing up user', {
+    toast.error(err.response.data.message, {
       position: 'top-right',
       autoClose: 5000,
       hideProgressBar: false,

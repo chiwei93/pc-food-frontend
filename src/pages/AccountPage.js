@@ -54,7 +54,21 @@ const AccountPage = props => {
         <div className={classes.uploadContainer}>
           <UploadBtn
             path={`/upload/${props.accountPage.activeAccount._id}`}
-            onClick={() => dispatch(onUploadBtnClick(props.ui.accountType))}
+            onClick={() => {
+              dispatch(onUploadBtnClick(props.ui.accountType));
+
+              if (props.ui.accountType === 'chef') {
+                dispatch({
+                  type: 'SET_MODAL_IMAGE_TYPE',
+                  payload: 'chef_image',
+                });
+              } else {
+                dispatch({
+                  type: 'SET_MODAL_IMAGE_TYPE',
+                  payload: 'user_image',
+                });
+              }
+            }}
           />
         </div>
       </div>
@@ -70,15 +84,6 @@ const AccountPage = props => {
               component={UpdateTextInput}
               label="name"
               inputType="text"
-            />
-          </li>
-
-          <li className={classes.detailItem}>
-            <Field
-              name="email"
-              component={UpdateTextInput}
-              label="email"
-              inputType="email"
             />
           </li>
         </ul>
@@ -102,7 +107,6 @@ const mapStateToProps = state => {
   return {
     initialValues: {
       name: state.accountPage.activeAccount.name,
-      email: state.accountPage.activeAccount.email,
     },
     ui: state.ui,
     accountPage: state.accountPage,

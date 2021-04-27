@@ -48,7 +48,7 @@ export const fetchInitialData = () => async dispatch => {
     dispatch({ type: 'STOP_PAGE_LOADING' });
   } catch (err) {
     //stop loading
-    dispatch({ type: 'STOP_CARDS_LOADING' });
+    dispatch({ type: 'STOP_PAGE_LOADING' });
 
     //notify the user of the error
     toast.error("Failed to fetch the chefs' data", {

@@ -9,11 +9,11 @@ const ProposalItem = ({ proposal }) => {
       <div className={classes.header}>
         <img
           src={proposal.account?.profileImage}
-          alt={proposal.account?.username}
+          alt={proposal.account?.name}
           className={classes.userImage}
         />
         <div className={classes.detailsContainer}>
-          <p className={classes.name}>{proposal.account?.username}</p>
+          <p className={classes.name}>{proposal.account?.name}</p>
           <p className={classes.date}>
             {moment(proposal.createdAt).format('MMMM Do YYYY')}
           </p>
@@ -25,7 +25,10 @@ const ProposalItem = ({ proposal }) => {
       ).format('MMMM Do YYYY')}`}</p>
 
       <div className={classes.btnContainer}>
-        <OrangeBtn path={`/proposals/${proposal._id}`} text="View Details" />
+        <OrangeBtn
+          path={`/proposals/${proposal.booking_id}`}
+          text="View Details"
+        />
       </div>
     </div>
   );

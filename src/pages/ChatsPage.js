@@ -1,20 +1,29 @@
 import React, { useEffect } from 'react';
-import { connect } from 'react-redux';
+import { connect, useSelector, useDispatch } from 'react-redux';
 import logo from '../images/chatImage.png';
-import { fetchChatsData } from '../actions';
+import { fetchChatsData } from '../actions/chatsPageActions';
 import PageContainer from '../containers/PageContainer';
 import ChatItem from '../components/ChatItem';
+import PageLoader from '../components/PageLoader';
 import classes from './ChatsPage.module.css';
 
 const ChatsPage = props => {
+  const dispatch = useDispatch();
+
+  const chat = useSelector(state => state.chat);
+
+  const ui = useSelector(state => state.ui);
+
   const currentUserEmail =
     props.currentUserEmail || localStorage.getItem('email');
 
-  console.log(props.chats);
-
   useEffect(() => {
-    props.fetchChatsData(currentUserEmail);
+    dispatch(fetchChatsData(currentUserEmail));
   }, []);
+
+  if (ui.isPageLoading) {
+    return <PageLoader />;
+  }
 
   return (
     <PageContainer>
@@ -24,7 +33,7 @@ const ChatsPage = props => {
       </div>
 
       <ul className={classes.chatList}>
-        {props.chats.map(chat => (
+        {chat.chats.map(chat => (
           <ChatItem
             {...chat}
             key={chat._id}
@@ -40,11 +49,4 @@ const ChatsPage = props => {
   );
 };
 
-const mapStateToProps = state => {
-  return {
-    chats: state.chat.chats,
-    currentUserEmail: state.email.email,
-  };
-};
-
-export default connect(mapStateToProps, { fetchChatsData })(ChatsPage);
+export default ChatsPage;

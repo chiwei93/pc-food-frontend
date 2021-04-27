@@ -169,6 +169,10 @@
   outline: none;
 }
 
+.loaderItem {
+  margin-top: 10em;
+}
+
 @media only screen and (min-width: 600px) {
   .pageContainer {
     padding: 0 2em;

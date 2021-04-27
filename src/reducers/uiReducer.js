@@ -6,6 +6,7 @@ const initialState = {
   accountType: 'user',
   uploadType: null,
   chefId: null,
+  imageType: '',
 };
 
 const uiReducer = (state = initialState, action) => {
@@ -30,6 +31,8 @@ const uiReducer = (state = initialState, action) => {
       return { ...state, uploadType: action.payload };
     case 'SET_CURRENT_CHEF_ID':
       return { ...state, chefId: action.payload };
+    case 'SET_MODAL_IMAGE_TYPE':
+      return { ...state, imageType: action.payload };
     default:
       return state;
   }

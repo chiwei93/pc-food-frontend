@@ -23,7 +23,6 @@ const ChatItem = ({
             {lastMessageDate &&
               moment(parseFloat(lastMessageDate)).format('MMM Do YY')}
           </p>
-          <div className={classes.notification}>4</div>
         </div>
         <span className={classes.underline}></span>
       </Link>

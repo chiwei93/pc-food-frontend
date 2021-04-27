@@ -9,39 +9,37 @@ export const fetchChefData = (id, history) => async dispatch => {
 
     //fetch all the data for the menus
     const responses = await Promise.all([
-      axios.get(`http://localhost:7000/api/v1/chefs/${id}`),
-      axios.get(`http://localhost:7000/api/v1/menus/${id}`),
-      axios.get(`http://localhost:7000/api/v1/categories/${id}`),
-      axios.get(`http://localhost:7000/api/v1/bookings/chefs/${id}`),
+      axios.get(`https://foodapp2021.herokuapp.com/api/v1/chefs/${id}`),
+      axios.get(`https://foodapp2021.herokuapp.com/api/v1/menus/chef/${id}`),
+      axios.get(
+        `https://foodapp2021.herokuapp.com/api/v1/food_categories/${id}`
+      ),
     ]);
 
     const datas = responses.map(res => res.data);
 
-    const { chef } = datas[0];
-    const { menus } = datas[1];
-    const { categories } = datas[2];
+    //chef
+    const chef = datas[0].chef_profile;
 
-    const bookings = datas[3].bookings.filter(
-      booking => booking.confirmed === true
-    );
+    //menu
+    const menus = datas[1].results;
 
-    const confirmedDates = bookings.map(
-      booking => new Date(booking.proposalDate)
-    );
+    //category
+    const { food_category } = datas[2];
 
-    const filteredCategories = categories.map(category => category.category);
-
-    chef.categories = filteredCategories;
-    chef.confirmedDates = confirmedDates;
+    chef.categories = food_category;
 
     const menuImagesPromises = menus.map(menu =>
-      axios.get(`http://localhost:7000/api/v1/menuImages/menu/${menu._id}`)
+      axios.get(
+        `https://foodapp2021.herokuapp.com/api/v1/menu_images/${menu.menu_id}`
+      )
     );
 
     const menuImagesResponses = await Promise.all(menuImagesPromises);
-    const menuImagesData = menuImagesResponses.map(res => res.data.images);
+
+    const menuImagesData = menuImagesResponses.map(res => res.data);
     const menuImages = menuImagesData.map(arr => {
-      return arr.map(el => el.imagePath);
+      return arr.map(el => el.image_path);
     });
 
     menus.forEach((menu, index) => {
@@ -77,17 +75,19 @@ export const onTabBtnClick = (tab, id) => async dispatch => {
 
       //fetch reviews for chef
       const response = await axios.get(
-        `http://localhost:7000/api/v1/reviews/chef/${id}`
+        `https://foodapp2021.herokuapp.com/api/v1/reviews/${id}`
       );
 
-      const { reviews } = response.data;
+      const reviews = response.data.chef_reviews || response.data;
 
       const userPromises = reviews.map(review =>
-        axios.get(`http://localhost:7000/api/v1/users/${review.user}`)
+        axios.get(
+          `https://foodapp2021.herokuapp.com/api/v1/users/${review.user_id}`
+        )
       );
 
       const userResponses = await Promise.all(userPromises);
-      const userDatas = userResponses.map(res => res.data.user);
+      const userDatas = userResponses.map(res => res.data);
 
       reviews.forEach((review, index) => {
         review.user = userDatas[index];
@@ -100,7 +100,7 @@ export const onTabBtnClick = (tab, id) => async dispatch => {
     }
   } catch (err) {
     //handle errors
-    console.log(err);
+
     dispatch({ type: 'STOP_CHEF_DETAIL_REVIEWS_LOADING' });
 
     //notify the user of the error

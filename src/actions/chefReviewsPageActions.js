@@ -8,17 +8,19 @@ export const fetchChefReviews = (chefId, history) => async dispatch => {
 
     //fetch all the reviews data
     const reviewsResponse = await axios.get(
-      `http://localhost:7000/api/v1/reviews/chef/${chefId}`
+      `https://foodapp2021.herokuapp.com/api/v1/reviews/${chefId}`
     );
 
-    const { reviews } = reviewsResponse.data;
+    const reviews = reviewsResponse.data.chef_reviews;
 
     const userPromises = reviews.map(review =>
-      axios.get(`http://localhost:7000/api/v1/users/${review.user}`)
+      axios.get(
+        `https://foodapp2021.herokuapp.com/api/v1/users/${review.user_id}`
+      )
     );
 
     const userResponses = await Promise.all(userPromises);
-    const userDatas = userResponses.map(res => res.data.user);
+    const userDatas = userResponses.map(res => res.data);
 
     reviews.forEach((review, index) => {
       review.user = userDatas[index];
@@ -29,8 +31,6 @@ export const fetchChefReviews = (chefId, history) => async dispatch => {
     //stop loading
     dispatch({ type: 'STOP_PAGE_LOADING' });
   } catch (err) {
-    console.log(err);
-
     dispatch({ type: 'STOP_PAGE_LOADING' });
 
     //navigate the user to the error page

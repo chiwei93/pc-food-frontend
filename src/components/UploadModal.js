@@ -28,7 +28,8 @@ const UploadModal = props => {
   //upload photo to cloud
   const onUploadBtnClick = () => {
     const formData = new FormData();
-    formData.append('image', uploadModal.imageFile);
+
+    formData.append(ui.imageType, uploadModal.imageFile);
 
     dispatch(uploadImage(formData, ui.uploadType, history, id));
   };
@@ -53,7 +54,7 @@ const UploadModal = props => {
             Choose a file...
           </label>
           <button className={classes.btnUpload} onClick={onUploadBtnClick}>
-            Upload
+            {uploadModal.isUploading ? 'In Progress...' : 'Upload'}
           </button>
         </div>
 

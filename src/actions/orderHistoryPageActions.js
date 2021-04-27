@@ -12,9 +12,9 @@ export const fetchOrders = (accountType, history) => async dispatch => {
     let url;
 
     if (accountType === 'chef') {
-      url = 'http://localhost:7000/api/v1/bookings/chefs/all';
+      url = 'https://foodapp2021.herokuapp.com/api/v1/bookings/chef';
     } else {
-      url = 'http://localhost:7000/api/v1/bookings/users/all';
+      url = 'https://foodapp2021.herokuapp.com/api/v1/bookings/user';
     }
 
     const response = await axios.get(url, {
@@ -23,7 +23,7 @@ export const fetchOrders = (accountType, history) => async dispatch => {
       },
     });
 
-    const { bookings } = response.data;
+    const bookings = response.data.results;
 
     const bookingsDisplay = bookings.filter(
       booking => booking.completed === true
@@ -33,18 +33,22 @@ export const fetchOrders = (accountType, history) => async dispatch => {
 
     if (accountType === 'chef') {
       promises = bookingsDisplay.map(booking =>
-        axios.get(`http://localhost:7000/api/v1/users/${booking.user}`)
+        axios.get(
+          `https://foodapp2021.herokuapp.com/api/v1/users/${booking.user}`
+        )
       );
     } else {
       promises = bookingsDisplay.map(booking =>
-        axios.get(`http://localhost:7000/api/v1/chefs/${booking.chef}`)
+        axios.get(
+          `https://foodapp2021.herokuapp.com/api/v1/chefs/${booking.chef}`
+        )
       );
     }
 
     const accountRes = await Promise.all(promises);
 
     const datas = accountRes.map(res => {
-      return res.data.user || res.data.chef;
+      return res.data.chef_profile || res.data;
     });
 
     bookingsDisplay.forEach((booking, index) => {
@@ -56,8 +60,6 @@ export const fetchOrders = (accountType, history) => async dispatch => {
     //stop page loading
     dispatch({ type: 'STOP_PAGE_LOADING' });
   } catch (err) {
-    console.log(err);
-
     //stop page loading
     dispatch({ type: 'STOP_PAGE_LOADING' });
 

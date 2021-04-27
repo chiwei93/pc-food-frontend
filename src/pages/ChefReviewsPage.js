@@ -37,8 +37,8 @@ const ChefReviewsPage = props => {
       </div>
 
       <ul className={classes.reviewsList}>
-        {chefReviewsPage.map(review => (
-          <li className={classes.reviewItem} key={review._id}>
+        {chefReviewsPage.map((review, index) => (
+          <li className={classes.reviewItem} key={index}>
             <ReviewItem review={review} />
           </li>
         ))}
